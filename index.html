@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Mod</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 0; }
+        .login-box { padding: 40px 20px; text-align: center; margin-top: 100px; }
+        .login-box input { padding: 12px; width: 80%; max-width: 300px; border-radius: 8px; border: 1px solid #333; background: #121212; color: #fff; text-align: center; font-size: 16px; margin-bottom: 15px; }
+        .login-box button { padding: 12px 30px; border-radius: 8px; border: none; background: #0095f6; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; }
+        
+        #app-content { display: none; padding: 15px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #262626; }
+        .editable { outline: none; border: 1px dashed transparent; }
+        .editable:focus { border-color: #0095f6; }
+        .profile-info { display: flex; align-items: center; justify-content: space-around; margin: 20px 0; }
+        .stat-box { text-align: center; }
+        .stat-num { font-weight: bold; font-size: 18px; }
+        .stat-label { font-size: 12px; color: #a8a8a8; }
+        .bio-section { margin: 15px 10px; font-size: 14px; line-height: 1.4; }
+        .dashboard-card { background: #121212; padding: 15px; border-radius: 10px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+<div id="login-screen" class="login-box">
+    <h2>Enter Access Key</h2>
+    <input type="text" id="keyInput" placeholder="XXXX-XXXX-XXXX"><br>
+    <button onclick="verifyKey()">Activate Key</button>
+    <p id="msg" style="margin-top:15px;"></p>
+</div>
+
+<div id="app-content">
+    <div class="header">
+        <span class="editable" contenteditable="true" style="font-weight:bold; font-size:20px;">zuck</span>
+        <span style="font-size: 12px; color: #0095f6;">Connected ✓</span>
+    </div>
+
+    <div class="profile-info">
+        <div class="stat-box">
+            <div class="stat-num editable" contenteditable="true">439</div>
+            <div class="stat-label">posts</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num editable" contenteditable="true">17M</div>
+            <div class="stat-label">followers</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num editable" contenteditable="true">622</div>
+            <div class="stat-label">following</div>
+        </div>
+    </div>
+
+    <div class="bio-section">
+        <div class="editable" contenteditable="true" style="font-weight:bold;">Mark Zuckerberg</div>
+        <div class="editable" contenteditable="true" style="color:#a8a8a8;">Reel creator</div>
+        <div class="editable" contenteditable="true">I build stuff</div>
+        <div class="editable" contenteditable="true" style="color:#e0f1ff;">http://meta.com/thefutureisforeveryone</div>
+    </div>
+
+    <div class="dashboard-card">
+        <div style="font-weight:bold; font-size:14px;">Professional dashboard</div>
+        <div style="color:#0095f6; font-size:13px; margin-top:5px;">
+            <span class="editable" contenteditable="true">13.7M</span> views in the last 30 days.
+        </div>
+    </div>
+</div>
+
+<script>
+const FIREBASE_URL = 'https://insight-editor-1f338-default-rtdb.asia-southeast1.firebasedatabase.app/';
+
+function getDeviceId() {
+    let id = localStorage.getItem("device_id");
+    if (!id) {
+        id = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        localStorage.setItem("device_id", id);
+    }
+    return id;
+}
+
+async function verifyKey() {
+    const key = document.getElementById("keyInput").value.trim().toUpperCase();
+    const msg = document.getElementById("msg");
+    const devId = getDeviceId();
+
+    if(!key) { msg.innerText = "Please enter key"; return; }
+    msg.innerText = "Checking...";
+
+    try {
+        const res = await fetch(`${FIREBASE_URL}/keys/${key}.json`);
+        const data = await res.json();
+
+        if(!data) { msg.innerText = "❌ Invalid Key"; return; }
+
+        const now = Date.now();
+
+        if(data.status === "unused") {
+            const expireAt = now + (data.days * 24 * 60 * 60 * 1000);
+            await fetch(`${FIREBASE_URL}/keys/${key}.json`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: "active", deviceId: devId, expireAt: expireAt })
+            });
+            showApp();
+            return;
+        }
+
+        if(now > data.expireAt) { msg.innerText = "❌ Key Expired"; return; }
+        if(data.deviceId !== devId) { msg.innerText = "❌ Key used on another device"; return; }
+
+        showApp();
+    } catch(e) {
+        msg.innerText = "Error connecting!";
+    }
+}
+
+function showApp() {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app-content").style.display = "block";
+}
+</script>
+
+</body>
+</html>
