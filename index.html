@@ -144,6 +144,22 @@ function getDeviceId() {
     return id;
 }
 
+// Live Expiry Timer Checker
+let expireCheckInterval = null;
+
+function startExpiryCheck() {
+    if (expireCheckInterval) clearInterval(expireCheckInterval);
+    
+    expireCheckInterval = setInterval(() => {
+        const savedExpire = localStorage.getItem("key_expire_at");
+        const now = Date.now();
+
+        if (!savedExpire || now >= parseInt(savedExpire)) {
+            lockApp("❌ Key Expired!");
+        }
+    }, 3000); // ਹਰ 3 ਸਕਿੰਟ ਬਾਅਦ ਚੈੱਕ ਕਰੇਗਾ
+}
+
 window.onload = function() {
     const devId = getDeviceId();
     document.getElementById("display-dev-id").innerText = devId;
@@ -175,7 +191,10 @@ async function verifyKey() {
         const now = Date.now();
 
         if(data.status === "unused") {
-            const expireAt = now + (data.days * 24 * 60 * 60 * 1000);
+            // durationMs ਜਾਂ ਦਿਨਾਂ ਤੋਂ Expiry ਕੈਲਕੁਲੇਟ ਕਰੋ
+            const durationMs = data.durationMs || (data.days * 24 * 60 * 60 * 1000);
+            const expireAt = now + durationMs;
+
             await fetch(`${FIREBASE_URL}/keys/${key}.json`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
@@ -200,6 +219,17 @@ async function verifyKey() {
 function showApp() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("app-content").style.display = "block";
+    startExpiryCheck();
+}
+
+function lockApp(reasonMessage) {
+    if (expireCheckInterval) clearInterval(expireCheckInterval);
+    localStorage.removeItem("key_expire_at");
+    document.getElementById("app-content").style.display = "none";
+    document.getElementById("login-screen").style.display = "flex";
+    const msg = document.getElementById("msg");
+    msg.innerText = reasonMessage || "Session Expired";
+    msg.style.color = "#ef4444";
 }
 </script>
 
