@@ -79,6 +79,32 @@ function getDeviceId() {
     return id;
 }
 
+// 📌 ਐਪ ਖੁੱਲ੍ਹਣ 'ਤੇ ਆਟੋਮੈਟਿਕ ਲੌਗਇਨ ਚੈੱਕ ਕਰੋ
+window.onload = function() {
+    checkSavedKey();
+};
+
+async function checkSavedKey() {
+    const savedKey = localStorage.getItem("active_key");
+    if (!savedKey) return;
+
+    try {
+        const res = await fetch(`${FIREBASE_URL}/keys/${savedKey}.json`);
+        const data = await res.json();
+        const devId = getDeviceId();
+        const now = Date.now();
+
+        if (data && data.status === "active" && data.deviceId === devId && now < data.expireAt) {
+            showApp();
+        } else {
+            // ਜੇ ਐਕਸਪਾਇਰ ਹੋ ਗਈ ਜਾਂ ਡਿਵਾਈਸ ਬਦਲ ਗਈ, ਤਾਂ ਸੇਵ ਕੀਤੀ Key ਹਟਾ ਦਿਓ
+            localStorage.removeItem("active_key");
+        }
+    } catch (e) {
+        console.log("Auto-login error");
+    }
+}
+
 async function verifyKey() {
     const key = document.getElementById("keyInput").value.trim().toUpperCase();
     const msg = document.getElementById("msg");
@@ -102,6 +128,9 @@ async function verifyKey() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: "active", deviceId: devId, expireAt: expireAt })
             });
+            
+            // 📌 ਫੋਨ ਵਿੱਚ Key ਸੇਵ ਕਰ ਲਵੋ
+            localStorage.setItem("active_key", key);
             showApp();
             return;
         }
@@ -109,6 +138,8 @@ async function verifyKey() {
         if(now > data.expireAt) { msg.innerText = "❌ Key Expired"; return; }
         if(data.deviceId !== devId) { msg.innerText = "❌ Key used on another device"; return; }
 
+        // 📌 ਸਭ ਸਹੀ ਹੈ ਤਾਂ ਫੋਨ ਵਿੱਚ Key ਸੇਵ ਕਰੋ
+        localStorage.setItem("active_key", key);
         showApp();
     } catch(e) {
         msg.innerText = "Error connecting!";
