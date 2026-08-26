@@ -2,28 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>-</title>
     <style>
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; }
-        body { 
-            background: linear-gradient(135deg, #f0efff 0%, #e8eaff 50%, #fdf2f8 100%); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; color: #1a1a2e; 
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background: #000;
         }
 
-        /* 🗝️ Login Screen */
+        /* 🗝️ Login Screen (Absolute Overlay) */
         .login-box { 
-            width: 100%; max-width: 360px; padding: 20px; text-align: center; animation: fadeIn 0.5s ease-in-out; 
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 999999;
+            background: linear-gradient(135deg, #f0efff 0%, #e8eaff 50%, #fdf2f8 100%); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
         }
         .hero-img { 
-            width: 160px; height: 160px; margin: 0 auto 20px; background: #ffffff; border-radius: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(180, 160, 255, 0.25); 
+            width: 150px; height: 150px; margin: 0 auto 15px; background: #ffffff; border-radius: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(180, 160, 255, 0.25); 
         }
         .title { font-size: 26px; font-weight: 800; color: #0d1117; margin-bottom: 8px; }
         .title span { background: linear-gradient(90deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 20px; }
 
         .card { 
-            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); 
+            width: 100%; max-width: 340px;
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); 
             border: 2px solid #a5b4fc; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(165, 180, 252, 0.3); 
         }
         .input-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; margin-bottom: 8px; text-align: left; }
@@ -37,8 +46,14 @@
         .device-info { font-size: 11px; color: #9ca3af; margin-top: 15px; font-family: monospace; }
         #msg { font-size: 13px; font-weight: 600; margin-top: 10px; }
 
-        /* 📱 Main App Screen (Clean Fullscreen Instagram Style) */
-        #app-content { display: none; width: 100%; min-height: 100vh; background: #000; color: #fff; padding: 15px; position: absolute; top:0; left:0; right:0; z-index: 999; }
+        /* 📱 Main App Screen */
+        #app-content { 
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 999999;
+            background: #000; color: #fff; padding: 15px; overflow-y: auto; 
+        }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #262626; }
         .editable { outline: none; border: 1px dashed transparent; }
         .editable:focus { border-color: #0095f6; }
@@ -48,8 +63,6 @@
         .stat-label { font-size: 12px; color: #a8a8a8; }
         .bio-section { margin: 15px 10px; font-size: 14px; line-height: 1.4; }
         .dashboard-card { background: #121212; padding: 15px; border-radius: 10px; margin: 15px 0; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -187,7 +200,6 @@ async function verifyKey() {
 function showApp() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("app-content").style.display = "block";
-    document.body.style.background = "#000";
 }
 </script>
 
