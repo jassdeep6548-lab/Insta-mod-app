@@ -3,14 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Mod</title>
+    <title>Unlock Insights</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 0; }
-        .login-box { padding: 40px 20px; text-align: center; margin-top: 100px; }
-        .login-box input { padding: 12px; width: 80%; max-width: 300px; border-radius: 8px; border: 1px solid #333; background: #121212; color: #fff; text-align: center; font-size: 16px; margin-bottom: 15px; }
-        .login-box button { padding: 12px 30px; border-radius: 8px; border: none; background: #0095f6; color: #fff; font-weight: bold; font-size: 16px; cursor: pointer; }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #f0efff 0%, #e8eaff 50%, #fdf2f8 100%); 
+            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; color: #1a1a2e; 
+        }
+
+        /* 🗝️ Login Screen Design */
+        .login-box { 
+            width: 100%; max-width: 360px; text-align: center; animation: fadeIn 0.5s ease-in-out; 
+        }
+        .hero-img { 
+            width: 180px; height: 180px; margin: 0 auto 20px; background: #ffffff; border-radius: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 40px rgba(180, 160, 255, 0.25); 
+        }
+        .hero-img img { width: 140px; height: 140px; object-fit: contain; }
         
-        #app-content { display: none; padding: 15px; }
+        .title { font-size: 28px; font-weight: 800; color: #0d1117; margin-bottom: 8px; }
+        .title span { background: linear-gradient(90deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 25px; padding: 0 10px; }
+
+        .card { 
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
+            border: 2px solid #a5b4fc; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(165, 180, 252, 0.3); 
+        }
+        .input-label { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        
+        .input-field { 
+            width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #e5e7eb; background: rgba(255, 255, 255, 0.9); font-size: 15px; font-weight: 600; text-align: center; color: #374151; letter-spacing: 1px; outline: none; margin-bottom: 15px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); 
+        }
+        .input-field::placeholder { color: #9ca3af; font-weight: 400; }
+        
+        .btn-unlock { 
+            width: 100%; padding: 14px; border-radius: 20px; border: none; background: linear-gradient(90deg, #a78bfa 0%, #38bdf8 100%); color: #ffffff; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4); 
+        }
+        .btn-unlock:active { transform: scale(0.98); }
+
+        .device-info { font-size: 11px; color: #9ca3af; margin-top: 15px; font-family: monospace; }
+        #msg { font-size: 13px; font-weight: 600; margin-top: 10px; }
+
+        /* 📱 App Content Screen */
+        #app-content { display: none; width: 100%; max-width: 400px; background: #000; color: #fff; min-height: 100vh; padding: 15px; position: absolute; top:0; left:0; right:0; }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #262626; }
         .editable { outline: none; border: 1px dashed transparent; }
         .editable:focus { border-color: #0095f6; }
@@ -20,17 +54,41 @@
         .stat-label { font-size: 12px; color: #a8a8a8; }
         .bio-section { margin: 15px 10px; font-size: 14px; line-height: 1.4; }
         .dashboard-card { background: #121212; padding: 15px; border-radius: 10px; margin: 15px 0; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+<!-- 🗝️ Beautiful Glassmorphism Login Screen -->
 <div id="login-screen" class="login-box">
-    <h2>Enter Access Key</h2>
-    <input type="text" id="keyInput" placeholder="XXXX-XXXX-XXXX"><br>
-    <button onclick="verifyKey()">Activate Key</button>
-    <p id="msg" style="margin-top:15px;"></p>
+    <div class="hero-img">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="url(#key-grad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <defs>
+                <linearGradient id="key-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#c084fc" />
+                    <stop offset="100%" stop-color="#38bdf8" />
+                </linearGradient>
+            </defs>
+            <circle cx="7.5" cy="15.5" r="5.5"></circle>
+            <path d="M11.4 11.6L21 2"></path>
+            <path d="M15.5 7.5L18.5 10.5"></path>
+        </svg>
+    </div>
+
+    <div class="title">Unlock your <span>insights</span></div>
+    <div class="subtitle">Paste your access key to jump back in — or grab one and start exploring in seconds.</div>
+
+    <div class="card">
+        <div class="input-label">🔑 ACCESS KEY</div>
+        <input type="text" id="keyInput" class="input-field" placeholder="DSX-XXXX-XXXX-XXXX">
+        <button class="btn-unlock" onclick="verifyKey()">Unlock →</button>
+        <p id="msg"></p>
+        <div class="device-info">device · <span id="display-dev-id">...</span></div>
+    </div>
 </div>
 
+<!-- 📱 Main App Screen -->
 <div id="app-content">
     <div class="header">
         <span class="editable" contenteditable="true" style="font-weight:bold; font-size:20px;">zuck</span>
@@ -73,14 +131,16 @@ const FIREBASE_URL = 'https://insight-editor-1f338-default-rtdb.asia-southeast1.
 function getDeviceId() {
     let id = localStorage.getItem("device_id");
     if (!id) {
-        id = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        id = 'DX-' + Math.random().toString(36).substring(2, 10).toUpperCase();
         localStorage.setItem("device_id", id);
     }
     return id;
 }
 
-// 📌 ਐਪ ਖੁੱਲ੍ਹਦੇ ਹੀ LocalStorage ਚੈੱਕ ਕਰੋ
 window.onload = function() {
+    const devId = getDeviceId();
+    document.getElementById("display-dev-id").innerText = devId;
+
     const savedExpire = localStorage.getItem("key_expire_at");
     const now = Date.now();
 
@@ -96,14 +156,14 @@ async function verifyKey() {
     const msg = document.getElementById("msg");
     const devId = getDeviceId();
 
-    if(!key) { msg.innerText = "Please enter key"; return; }
-    msg.innerText = "Checking...";
+    if(!key) { msg.innerText = "Please enter key"; msg.style.color = "#ef4444"; return; }
+    msg.innerText = "Checking..."; msg.style.color = "#6b7280";
 
     try {
         const res = await fetch(`${FIREBASE_URL}/keys/${key}.json`);
         const data = await res.json();
 
-        if(!data) { msg.innerText = "❌ Invalid Key"; return; }
+        if(!data) { msg.innerText = "❌ Invalid Key"; msg.style.color = "#ef4444"; return; }
 
         const now = Date.now();
 
@@ -115,26 +175,26 @@ async function verifyKey() {
                 body: JSON.stringify({ status: "active", deviceId: devId, expireAt: expireAt })
             });
             
-            // 📌 Expiry Time ਫੋਨ 'ਚ ਸੇਵ ਕਰੋ
             localStorage.setItem("key_expire_at", expireAt);
             showApp();
             return;
         }
 
-        if(now > data.expireAt) { msg.innerText = "❌ Key Expired"; return; }
-        if(data.deviceId !== devId) { msg.innerText = "❌ Key used on another device"; return; }
+        if(now > data.expireAt) { msg.innerText = "❌ Key Expired"; msg.style.color = "#ef4444"; return; }
+        if(data.deviceId !== devId) { msg.innerText = "❌ Used on another device"; msg.style.color = "#ef4444"; return; }
 
-        // 📌 ਜੇਕਰ ਪਹਿਲਾਂ ਤੋਂ Active ਹੈ ਤਾਂ ਵੀ Expiry Time ਸੇਵ ਕਰੋ
         localStorage.setItem("key_expire_at", data.expireAt);
         showApp();
     } catch(e) {
-        msg.innerText = "Error connecting!";
+        msg.innerText = "Error connecting!"; msg.style.color = "#ef4444";
     }
 }
 
 function showApp() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("app-content").style.display = "block";
+    document.body.style.background = "#000";
+    document.body.style.padding = "0";
 }
 </script>
 
