@@ -65,7 +65,7 @@
         .header-icons { display: flex; gap: 20px; align-items: center; }
 
         .feed-container {
-            flex: 1; overflow-y: auto; padding-bottom: 80px;
+            flex: 1; overflow-y: auto; padding-bottom: 60px;
         }
 
         /* Stories Section */
@@ -126,7 +126,7 @@
         /* 👤 Profile Screen View */
         #profile-view {
             display: none; width: 100%; height: 100%;
-            background: #000; color: #fff; padding: 15px; overflow-y: auto; padding-bottom: 80px;
+            background: #000; color: #fff; padding: 15px; overflow-y: auto; padding-bottom: 60px;
         }
         .prof-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #262626; }
         .editable { outline: none; border: 1px dashed transparent; }
@@ -138,23 +138,25 @@
         .bio-section { margin: 15px 10px; font-size: 14px; line-height: 1.4; }
         .dashboard-card { background: #121212; padding: 15px; border-radius: 10px; margin: 15px 0; }
 
-        /* 📌 Bottom Navigation Bar (BIGGER BUTTONS & ICONS) */
+        /* 📌 Pixel-Perfect Instagram Bottom Navigation */
         .instagram-nav-bar {
             width: 100%;
+            height: 48px;
             background-color: #000000;
-            padding: 12px 0 14px 0;
             position: fixed;
             bottom: 0;
             left: 0;
             z-index: 99999;
-            border-top: 0.5px solid #262626;
+            border-top: 0.5px solid #1a1a1a;
         }
 
         .nav-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0 5px;
+            height: 100%;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .nav-btn {
@@ -165,49 +167,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4px;
-            transition: transform 0.1s ease;
+            width: 48px;
+            height: 48px;
         }
 
         .nav-btn:active {
-            transform: scale(0.85);
-            opacity: 0.7;
-        }
-
-        /* 🚀 Icon Size Increased to 40px */
-        .custom-nav-icon {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-            display: block;
+            opacity: 0.5;
         }
 
         .profile-btn-wrap {
             position: relative;
-            width: 40px;
-            height: 40px;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .profile-img {
-            width: 38px;
-            height: 38px;
+            width: 25px;
+            height: 25px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid #555;
+            border: 1px solid #333;
         }
 
         .red-dot-badge {
             position: absolute;
-            bottom: 0px;
-            right: 0px;
-            width: 10px;
-            height: 10px;
+            bottom: -2px;
+            right: -2px;
+            width: 7px;
+            height: 7px;
             background-color: #ff3040;
             border-radius: 50%;
-            border: 2px solid #000;
+            border: 1.5px solid #000;
         }
     </style>
 </head>
@@ -361,26 +354,31 @@
         </div>
     </div>
 
-    <!-- 📌 Custom Bottom Navigation Bar -->
+    <!-- 📌 Exact Vector Bottom Navigation Bar -->
     <div class="instagram-nav-bar">
         <div class="nav-container">
             
+            <!-- 1. Home Icon -->
             <button class="nav-btn" onclick="switchTab('home')">
-                <img src="1000231717-removebg-preview.png" alt="Home" class="custom-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M22 20.25c0 .414-.336.75-.75.75H14.5a.75.75 0 0 1-.75-.75V15h-3.5v5.25c0 .414-.336.75-.75.75H2.75A.75.75 0 0 1 2 20.25V10.518c0-.284.116-.554.32-.75L11.57.94a.75.75 0 0 1 1.02 0l9.25 8.828c.204.196.32.466.32.75v9.732z"/></svg>
             </button>
 
+            <!-- 2. Reels Icon -->
             <button class="nav-btn" onclick="switchTab('reels')">
-                <img src="1000231654-removebg-preview.png" alt="Reels" class="custom-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M10 9.5l6 4.5-6 4.5v-9z"></path></svg>
             </button>
 
+            <!-- 3. Share Icon -->
             <button class="nav-btn" onclick="switchTab('share')">
-                <img src="1000231656-removebg-preview.png" alt="Share" class="custom-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
 
+            <!-- 4. Search Icon -->
             <button class="nav-btn" onclick="switchTab('search')">
-                <img src="1000231658-removebg-preview.png" alt="Search" class="custom-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
 
+            <!-- 5. Profile Icon -->
             <button class="nav-btn" onclick="switchTab('profile')">
                 <div class="profile-btn-wrap">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Profile" class="profile-img">
