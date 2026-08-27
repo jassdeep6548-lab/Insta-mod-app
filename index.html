@@ -138,23 +138,23 @@
         .bio-section { margin: 15px 10px; font-size: 14px; line-height: 1.4; }
         .dashboard-card { background: #121212; padding: 15px; border-radius: 10px; margin: 15px 0; }
 
-        /* 📌 Bottom Navigation Bar */
+        /* 📌 Bottom Navigation Bar (Fixed Larger Icons & No Line) */
         .instagram-nav-bar {
             width: 100%;
-            background-color: #0d0e11;
-            padding-top: 10px;
-            padding-bottom: 6px;
+            background-color: #000000;
+            padding: 10px 0;
             position: fixed;
             bottom: 0;
             left: 0;
             z-index: 99999;
+            border-top: 0.5px solid #262626;
         }
 
         .nav-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            padding: 0 26px 8px 26px;
+            padding: 0 10px;
         }
 
         .nav-btn {
@@ -174,7 +174,7 @@
         }
 
         .custom-nav-icon {
-            height: 26px;
+            height: 32px;
             width: auto;
             object-fit: contain;
             display: block;
@@ -182,16 +182,16 @@
 
         .profile-btn-wrap {
             position: relative;
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .profile-img {
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid #555;
@@ -205,15 +205,7 @@
             height: 8px;
             background-color: #ff3040;
             border-radius: 50%;
-            border: 2px solid #0d0e11;
-        }
-
-        .ios-home-bar {
-            width: 135px;
-            height: 4.5px;
-            background-color: #8e8e93;
-            border-radius: 10px;
-            margin: 4px auto 2px auto;
+            border: 2px solid #000;
         }
     </style>
 </head>
@@ -407,8 +399,6 @@
             </button>
 
         </div>
-
-        <div class="ios-home-bar"></div>
     </div>
 
 </div>
